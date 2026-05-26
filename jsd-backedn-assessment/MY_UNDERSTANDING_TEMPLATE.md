@@ -178,7 +178,43 @@ Step 7: ส่ง Response กลับไปให้ Client
 
 **8. What is CRUD? Map each operation to the HTTP method and route you used in your API.**
 
-*Your answer:*
+*Your answer: CRUD เป็นคำย่อที่มาจาก 4 คำสั่งพื้นฐานที่ระบบแอปพลิเคชันและฐานข้อมูลทุกระบบต้องมี เพื่อใช้ในการจัดการกับข้อมูลครับ ได้แก่ Create (สร้าง), Read (อ่าน), Update (แก้ไข), และ Delete (ลบ)
+
+ในโปรเจกต์ API จัดการสินค้า (Product API) ของผม ผมได้ออกแบบการทำงานของ CRUD ให้สอดคล้องกับมาตรฐาน RESTful API โดยจับคู่เข้ากับ HTTP Method และ Route (Endpoint) ไว้ดังนี้ครับ:
+
+1. C = Create (การสร้างข้อมูลใหม่)
+
+HTTP Method: POST
+
+Route: /api/products
+
+การทำงานใน API ของผม คือ รับข้อมูลสินค้าชุดใหม่ (เช่น ชื่อสินค้า, ราคา, จำนวน) ที่ส่งมาในรูปแบบ JSON ผ่าน req.body เพื่อนำไปสร้างและบันทึกเป็นรายการสินค้าชิ้นใหม่ลงใน MongoDB
+
+2. R = Read (การอ่านหรือดึงข้อมูล)
+
+HTTP Method: GET
+
+Route ใน API ของผม (มี 2 รูปแบบ):
+
+/api/products : สำหรับดึงข้อมูลสินค้า "ทั้งหมด" ออกมาแสดงผลเป็น Array
+
+/api/products/:id : สำหรับดึงข้อมูลสินค้า "เฉพาะชิ้น" ออกมาดูรายละเอียด โดยอ้างอิงจาก ID ที่แนบมาใน req.params
+
+3. U = Update (การแก้ไขข้อมูล)
+
+HTTP Method: PUT (หรือบางงานอาจใช้ PATCH)
+
+Route: /api/products/:id
+
+การทำงานใน API ของผม คือ รับค่า ID จาก URL เพื่อระบุตัวสินค้าที่ต้องการแก้ไข และรับข้อมูลที่ถูกแก้ไขใหม่ผ่าน req.body เพื่อนำไปอัปเดตทับข้อมูลเดิมในฐานข้อมูล
+
+4. D = Delete (การลบข้อมูล)
+
+HTTP Method: DELETE
+
+Route: /api/products/:id
+
+การทำงานใน API ของผม คือ รับค่า ID จาก URL (req.params.id) เพื่อระบุให้แม่นยำว่าต้องการลบสินค้าชิ้นไหน แล้วนำไปสั่งลบสินค้ารายการนั้นออกจาก MongoDB อย่างถาวร *
 
 ---
 
