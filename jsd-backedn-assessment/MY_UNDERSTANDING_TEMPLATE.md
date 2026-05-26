@@ -142,7 +142,37 @@ Do not copy from documentation, your code comments, or AI output. If you are uns
 
 **7. Walk through what happens on the server, step by step, when a POST request is sent to `/products`.**
 
-*Your answer:*
+*Your answer: เมื่อฝั่ง Client (เช่น React หรือ REST Client) ส่งคำสั่ง POST มาที่ Endpoint /api/products พร้อมแนบข้อมูล JSON มาด้วย การทำงานบน Server ของผมจะมีลำดับขั้นตอน (Data Flow) ดังนี้ครับ:
+
+Step 1: Request วิ่งเข้ามาที่ Server (index.js)
+คำสั่ง HTTP Request จะเดินทางมาถึงไฟล์ index.js ซึ่งเป็นประตูบานแรกของระบบ Backend
+
+Step 2: ผ่านด่าน Middleware
+ข้อมูลจะถูกส่งผ่าน Middleware ตามลำดับจากบนลงล่าง:
+
+ผ่าน cors() เพื่อตรวจสอบสิทธิ์การเรียกใช้งานข้ามโดเมน
+
+ผ่าน express.json() ซึ่งจะทำหน้าที่จับเอาข้อมูล JSON ที่แนบมา แปลงให้กลายเป็น JavaScript Object แล้วนำไปฝากไว้ในตัวแปร req.body เพื่อให้พร้อมใช้งาน
+
+Step 3: คัดแยกเส้นทางที่ Route (routes/product.route.js)
+ระบบจะนำ URL /api/products ไปเทียบกับ Route ที่ลงทะเบียนไว้ เมื่อพบว่าตรงกัน ระบบจะส่งไม้ต่อไปยังไฟล์ product.route.js และเมื่อเห็นว่าเป็น Method POST มันจึงเรียกใช้งานฟังก์ชัน createProduct ที่ผูกเอาไว้
+
+Step 4: ประมวลผลที่ Controller (controllers/product.controllers.js)
+ฟังก์ชัน createProduct จะเริ่มทำงาน (ภายในบล็อก try...catch) โดยมันจะดึงข้อมูลที่ฝากไว้ใน req.body ออกมาเตรียมไว้
+
+Step 5: ตรวจสอบความถูกต้องที่ Model (models/product.model.js)
+Controller จะส่งข้อมูลไปให้ Model ทำการตรวจสอบโครงสร้าง (Schema Validation) ว่าข้อมูลที่ส่งมามีครบถ้วนและถูกต้องตามที่เรากำหนดไว้หรือไม่ (เช่น name ต้องเป็น String, price ต้องเป็นตัวเลข)
+
+Step 6: บันทึกลง Database (MongoDB)
+เมื่อข้อมูลถูกต้อง ระบบจะเรียกใช้คำสั่ง await newProduct.save() เพื่อนำข้อมูลก้อนนั้นไปบันทึกลงในฐานข้อมูล MongoDB โดย MongoDB จะทำการสร้าง _id (Primary Key) และ timestamps เพิ่มเข้าไปให้อัตโนมัติ
+
+Step 7: ส่ง Response กลับไปให้ Client
+
+กรณีสำเร็จ: Controller จะได้รับข้อมูลที่ถูกบันทึกสมบูรณ์จาก Database กลับมา และใช้คำสั่ง res.status(201).json(savedProduct) เพื่อส่ง Status 201 พร้อมกับข้อมูลสินค้าชิ้นใหม่ กลับไปให้ Client เป็นอันจบกระบวนการ
+
+กรณีมีปัญหา (Error): หากเกิดข้อผิดพลาดในขั้นตอนใดก็ตาม (เช่น ส่งข้อมูลผิดประเภท หรือ Database ล่ม) โค้ดจะกระโดดไปที่บล็อก catch ทันที และส่ง res.status(500) กลับไปแจ้ง Client ว่าระบบเซิร์ฟเวอร์เกิดข้อผิดพลาด 
+
+[***Tutror สามารถูกรูปภาพที่ผมทำเอาไว้ได้ใน path: jsd-backedn-assessment/My-Flow-Picture.pnd ***]*
 
 ---
 
