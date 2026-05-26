@@ -220,7 +220,40 @@ Route: /api/products/:id
 
 **9. How does your API respond when something goes wrong — for example, when a product with a given ID does not exist?**
 
-*Your answer:*
+*Your answer: API ของผมมีการจัดการกับข้อผิดพลาด (Error Handling) อย่างเป็นระบบ โดยใช้โครงสร้าง try...catch ร่วมกับการส่ง HTTP Status Code ที่เหมาะสมกลับไปให้ Frontend เพื่อป้องกันไม่ให้ Server หยุดทำงาน (Crash) และช่วยให้ฝั่งหน้าบ้านสามารถนำข้อความ Error ไปแสดงผลต่อได้อย่างถูกต้องครับ
+
+ยกตัวอย่างกรณีที่มีการค้นหา ID สินค้าที่ไม่มีอยู่จริงในระบบ การตอบสนองจะแบ่งเป็น 2 ด่าน ดังนี้ครับ:
+
+ด่านที่ 1: กรณีหาไม่เจอ (ส่ง 404 Not Found)
+ในฟังก์ชันค้นหาสินค้า (เช่น getProductById) หากรูปบบ ID ถูกต้อง แต่สินค้านั้นถูกลบไปแล้ว Database จะส่งค่ากลับมาเป็นว่างเปล่า (null) ผมจะเขียนเงื่อนไข if ดักไว้ หากไม่มีข้อมูล ผมจะสั่งให้ API ตอบกลับด้วย Status Code 404 พร้อมแนบ JSON Message ไปบอก Frontend ตรงๆ ว่าหาไม่เจอ
+
+ผลลัพธ์ที่ตอบกลับ: Status 404 พร้อมข้อมูล {"message": "Product not found"}
+
+ด่านที่ 2: กรณีระบบมีปัญหา (ส่ง 500 Internal Server Error)
+หากรูปแบบ ID ที่ส่งมาผิดเพี้ยนไปจากมาตรฐานของ MongoDB (ทำให้ระบบค้นหาทำงานต่อไม่ได้) หรือ Database เกิดล่มกะทันหัน โค้ดจะกระโดดหนีเข้าไปทำงานในบล็อก catch (error) ทันที ซึ่งผมเขียนดักไว้ให้ส่ง Status Code 500 กลับไป เพื่อแจ้งว่าปัญหาเกิดจากความผิดพลาดของระบบหลังบ้านเอง
+
+ผลลัพธ์ที่ตอบกลับ: Status 500 พร้อมข้อมูล {"message": "ข้อความอธิบาย Error ที่เกิดขึ้น"}
+
+ตัวอย่างโค้ดคลีนๆ ที่ผมใช้จัดการใน Controller ครับ:
+
+exports.getProductById = async (req, res) => {
+  try {
+    const product = await Product.findById(req.params.id);
+    
+    // ด่านที่ 1: ดักจับกรณีหาข้อมูลไม่เจอ
+    if (!product) {
+      return res.status(404).json({ message: "Product not found" });
+    }
+    
+    // ถ้าสำเร็จและหาเจอ จะส่งข้อมูลสินค้ากลับไป
+    res.status(200).json(product);
+
+  } catch (error) {
+    // ด่านที่ 2: รับ Error กรณีระบบหลังบ้านมีปัญหา
+    res.status(500).json({ message: error.message });
+  }
+};
+*
 
 ---
 
