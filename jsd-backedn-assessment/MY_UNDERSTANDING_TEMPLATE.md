@@ -52,7 +52,22 @@ Do not copy from documentation, your code comments, or AI output. If you are uns
 
 **3. What is the difference between `req.body`, `req.params`, and `req.query`? Give a real example from your API for each one.**
 
-*Your answer:*
+*Your answer: โดยทั้ง 3 ตัว นี้คือช่องทางที่ Backend (Express.js) ใช้รับข้อมูลที่ฝั่ง Client หรือ Frontend ส่งเข้ามา โดยจะถูกเลือกใช้งานในบริบทที่แตกต่างกัน ดังนี้ : 
+
+    1. req.body (ส่งข้อมูลเป็นก้อน Payload)
+         การทำงาน: ใช้สำหรับรับข้อมูลที่มีความซับซ้อน เป็นความลับ หรือมีขนาดใหญ่ (มักส่งมาในรูปแบบ JSON) โดยข้อมูลจะถูกซ่อนมาใน Body ของ HTTP Request มักใช้กับ Method POST และ PUT (วิธีการส่งแบบนี้มีความปลอดภัยที่สูง)
+        
+        ตัวอย่าง : จาก API ของผม ตอนที่ผมต้องการเพิ่มสินค้าใหม่ ผมส่ง Method POST พร้อมแนบ JSON ไปว่า {"name": "Gaming Mouse", "price": 1290} ซึ่งในไฟล์ Controller ของผมจะอ่านค่านี้ผ่าน req.body.name และจัดการ จากนั้นโยนก้อน req.body ทั้งหมดเข้าไปไฟล์ Model เพื่อตรวจสอบ หากถูกต้องก็จะโยนไปบันทึกใน MongoDB เพื่อจัดเก็บข้อมูลที่ถูกส่งมา
+
+    2. req.params (ส่งข้อมูลระบุตัวตนใน URL Path)
+         การทำงาน: ใช้รับข้อมูลที่ถูกฝังมาเป็นส่วนหนึ่งของโครงสร้าง URL (Endpoint) พร้อมกัน มักใช้สำหรับการระบุ "ตัวตน" ของข้อมูลที่ต้องการจัดการแบบเจาะจง เช่น ค่า ID (วิธีการส่งนี้ไม่เหมาะสำหรับส่งข้อมูลที่เป็นความลับ)
+
+         ตัวอย่าง: จาก API ของผม ในไฟล์ Route ผมกำหนด Path ไว้ว่า router.delete('/:id') ดังนั้นเมื่อมี Request ส่งมาเพื่อลบสินค้าที่ URL DELETE /api/products/662b1... ตัว Backend จะสามารถดูดเอาไอดี 662b1... ไปใช้งานต่อได้ผ่านคำสั่ง req.params.id [หมายเหตุ : ขึ้นตอน หรือการเขียนโค๊ดก็จะคล้ายๆ กันกับตัวอย่าง ของ req.body]
+
+    3. req.query (ส่งข้อมูลต่อท้าย URL เพื่อค้นหา/กรอง)
+         การทำงาน: ใช้รับข้อมูลที่แนบมาท้าย URL โดยมีเครื่องหมายคำถาม ? นำหน้า และใช้ & เชื่อม (Query String) มักถูกนำมาใช้สำหรับการทำระบบค้นหา (Search), กรองข้อมูล (Filter) หรือแบ่งหน้า (Pagination) มักใช้กับ Method GET (วิธีการส่งนี้ไม่เหมาะสำหรับส่งข้อมูลที่เป็นความลับ)
+
+         ตัวอย่าง: จาก API ของผม ในระบบดึงรายการสินค้า (GET /api/products) หากในอนาคต Frontend ต้องการค้นหาเฉพาะคีย์บอร์ด จะต้องยิง URL มาเป็น GET /api/products?search=keyboard&maxPrice=3000 ซึ่งใน Controller ของผมจะสามารถดึงคำว่า keyboard และตัวเลข 3000 ไปใช้ค้นหาใน Database ได้ผ่านคำสั่ง req.query.search และ req.query.maxPrice ได้เลย *
 
 ---
 
