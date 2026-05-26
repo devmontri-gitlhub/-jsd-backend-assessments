@@ -1,0 +1,99 @@
+###
+POST http://localhost:5000/api/products
+Content-Type: application/json
+
+{
+  "name": "Gaming Mouse",
+  "price": 1290,
+  "quantity": 50
+}
+
+###
+POST http://localhost:5000/api/products
+Content-Type: application/json
+
+{
+  "name": "Mechanical Keyboard",
+  "price": 2590,
+  "quantity": 30
+}
+
+###
+POST http://localhost:5000/api/products
+Content-Type: application/json
+
+{
+  "name": "Gaming Monitor 24",
+  "price": 4500,
+  "quantity": 15
+}
+
+###
+POST http://localhost:5000/api/products
+Content-Type: application/json
+
+{
+  "name": "Wireless Headset",
+  "price": 1990,
+  "quantity": 25
+}
+
+###
+POST http://localhost:5000/api/products
+Content-Type: application/json
+
+{
+  "name": "Ergonomic Chair",
+  "price": 5900,
+  "quantity": 10
+}
+
+###
+POST http://localhost:5000/api/products
+Content-Type: application/json
+
+{
+  "name": "USB C Hub",
+  "price": 890,
+  "quantity": 100
+}
+
+###
+POST http://localhost:5000/api/products
+Content-Type: application/json
+
+{
+  "name": "External SSD 1TB",
+  "price": 3200,
+  "quantity": 40
+}
+
+###
+POST http://localhost:5000/api/products
+Content-Type: application/json
+
+{
+  "name": "Webcam HD",
+  "price": 1500,
+  "quantity": 20
+}
+
+###
+POST http://localhost:5000/api/products
+Content-Type: application/json
+
+{
+  "name": "Desk Mat RGB",
+  "price": 650,
+  "quantity": 60
+}
+
+###
+POST http://localhost:5000/api/products
+Content-Type: application/json
+
+{
+  "name": "Bluetooth Speaker",
+  "price": 1250,
+  "quantity": 35
+}

@@ -1,0 +1,9 @@
+###
+POST http://localhost:5000/api/products
+Content-Type: application/json
+
+{
+  "name": "Product For Deletion",
+  "price": 22,
+  "quantity": 35
+}

@@ -1,0 +1,29 @@
+GET http://localhost:5000/api/products
+
+###
+
+GET http://localhost:5000/api/products/6a152667d009c1a5afd2270a
+
+###
+
+POST http://localhost:5000/api/products
+Content-Type: application/json
+
+{
+  "name": "Sample Product",
+  "price": 250,
+  "quantity": 50
+}
+
+###
+
+PUT http://localhost:5000/api/products/6a1526f6d009c1a5afd22714
+Content-Type: application/json
+
+{
+  "price": 299
+}
+
+###
+
+DELETE http://localhost:5000/api/products/6a152790d009c1a5afd22715
