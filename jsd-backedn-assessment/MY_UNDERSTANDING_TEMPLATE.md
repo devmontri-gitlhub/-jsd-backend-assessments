@@ -1,4 +1,7 @@
 # My Understanding
+
+[ตัวอย่าง Flow My Project Part : jsd-backend-assessment/My-Flow-Picute.png]
+
 Step 1 : *.rest 
 
 หน้าที่หลัก: จำลองฝั่ง Client สำหรับยิงทดสอบระบบ
@@ -40,7 +43,7 @@ Step 6 : controllers/product.controllers.js
 ## Submission Links
 
 **Loom Video (must be set to public — anyone with the link):**
-[paste your Loom video URL here]
+[[paste your Loom video URL here](https://www.loom.com/share/2a29b9e56f794f8ea872f8394183cfe5?t=632)]
 
 ---
 
